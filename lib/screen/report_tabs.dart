@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trafiqpro/screen/customer_list.dart';
 import 'package:trafiqpro/screen/daybook_report.dart';
+import 'package:trafiqpro/screen/product_details.dart';
 import '../components/popups/level1_rp_detail.dart';
 import '../controller/controller.dart';
 
@@ -93,9 +94,10 @@ class _ReportTabsState extends State<ReportTabs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CustomerList(
-                                    map: list[ind],
-                                  )),
+                            builder: (context) => CustomerList(
+                              map: list[ind],
+                            ),
+                          ),
                         );
                       } else {
                         value.fromDate = null;

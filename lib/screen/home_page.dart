@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sql_conn/sql_conn.dart';
+import 'package:trafiqpro/components/popups/dashboard_popup.dart';
 import 'package:trafiqpro/controller/registration_controller.dart';
 import 'package:trafiqpro/screen/daybook_report.dart';
 import 'package:trafiqpro/screen/report_tabs.dart';
@@ -22,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   String? todaydate;
   DateTime now = DateTime.now();
   ScrollController _scrollController = ScrollController();
+  CustomPopup popup = CustomPopup();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -160,14 +163,33 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 8.0),
-                      //   child: Text(
-                      //     "Branch",
-                      //     style: TextStyle(
-                      //         color: Colors.blue, fontWeight: FontWeight.bold),
-                      //   ),
-                      // ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            // backgroundColor: Color.fromARGB(255, 203, 232, 142),
+                            // primary: Colors.blue,
+                            ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  popup.buildPopupDialog(
+                                      context,
+                                      "Product",
+                                      "Model",
+                                      todaydate.toString(),
+                                      todaydate.toString()));
+                          // Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          '...',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 203, 232, 142),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                      // Text("...", style: TextStyle(color: Colors.white)),
+
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: value.isLoading
