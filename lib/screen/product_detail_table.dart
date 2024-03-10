@@ -72,7 +72,10 @@ class _REport_TableState extends State<REport_Table> {
                 : Text(
                     "BATCH",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.yellow, fontSize: 18),
+                    style: TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
             // Text("${value.branch_list[0]}"),
             value.isProLoading
@@ -112,6 +115,7 @@ class _REport_TableState extends State<REport_Table> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        // color: Color.fromARGB(255, 129, 118, 85),
         // width: (size.width * 0.8) * len,
         child: Column(
           children: [
@@ -171,6 +175,7 @@ class _REport_TableState extends State<REport_Table> {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
+          // border: Border.all(color: Colors.grey),
         ),
       ),
     );
