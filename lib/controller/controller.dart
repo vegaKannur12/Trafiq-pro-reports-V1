@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class Controller extends ChangeNotifier {
   List<CD> c_d = [];
   List<Map<String, dynamic>> db_list = [];
   bool isCusLoading = false;
+  bool isProLoading = false;
   DateTime? sdate;
   DateTime? ldate;
   String? cName;
@@ -58,6 +60,8 @@ class Controller extends ChangeNotifier {
   bool isSubReportLoading = false;
   bool isl3SubReportLoading = false;
   List<Map<String, dynamic>> dashboard_report = [];
+  List<Map<String, dynamic>> productdetail_report = [];
+  List<Map<String, dynamic>> batch_report = [];
   List<Map<String, dynamic>> ledger = [];
   List<Map<String, dynamic>> daybook = [];
   List<Map<String, dynamic>> ledger_list = [];
@@ -68,6 +72,7 @@ class Controller extends ChangeNotifier {
   bool isdbLoading = true;
 
   List<Map<String, dynamic>> filteredList = [];
+  List<Map<String, dynamic>> searchProduct = [];
   var result1 = <String, List<Map<String, dynamic>>>{};
   var resultList = <String, List<Map<String, dynamic>>>{};
 
@@ -82,6 +87,8 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> branch_list = [];
   List<Map<String, dynamic>> customer_list = [];
+  List<Map<String, dynamic>> productname_list = [];
+
   String? userName;
   List<Map<String, dynamic>> l3_sub_report_data = [];
 
@@ -348,10 +355,47 @@ class Controller extends ChangeNotifier {
           groupByName(result);
           isLoading = false;
           notifyListeners();
-        } catch (e) {
+        } on PlatformException catch (e) {
+          print("PlatformException occurredcttr: $e");
+          // await SqlConn.disconnect();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Not Connected.! ",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SpinKitCircle(
+                      color: Colors.green,
+                    )
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text('Connect'),
+                    onPressed: () async {
+                      await initYearsDb(context, "");
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
           print(e);
-          // return null;
+          return null;
+        } catch (e) {
+          print("An unexpected error occurred: $e");
           return [];
+
+          // Handle other types of exceptions
         }
       }
     });
@@ -376,7 +420,7 @@ class Controller extends ChangeNotifier {
           }
           dashboard_report.add(item);
           notifyListeners();
-          print("listt------$dashboard_report");
+          print("dashboard reports------$dashboard_report");
         } catch (e) {
           print(e);
           // return null;
@@ -1111,7 +1155,104 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+//////////////////////////////////////////////////////////////////////
+  getProductNameList(BuildContext context, String dte1, String dt2) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cid = await prefs.getString("cid");
+    String? db = prefs.getString("db_name");
+    String? brId = await prefs.getString("br_id");
+    int multidate = 0;
+    param = "";
+    isProLoading = true;
+    notifyListeners();
+    if (multidate == 0) {
+      param = "'$dte1','$dt2'";
+    } else {
+      param = "'$dte1','$dt2'";
+    }
+
+    print("productname body----$cid--$db--branch:$brId--$param");
+    print("parameter----$param");
+
+    var res = await SqlConn.readData("Flt_items_list '','$cid','$brId',$param");
+    print("productnamelist $res");
+
+    var valueMap = json.decode(res);
+
+    productname_list.clear();
+    if (valueMap != null) {
+      for (var item in valueMap) {
+        productname_list.add(item);
+      }
+    }
+
+    isProLoading = false;
+    print("productname list-------------$productname_list");
+    notifyListeners();
+  }
+
+//////////////////////////////////////////////////////////////////////
+  getProductDetailsList(BuildContext context, int? pid) async {
+    print("product id...........$pid");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cid = await prefs.getString("cid");
+    String? db = prefs.getString("db_name");
+    String? brId = await prefs.getString("br_id");
+    param = "";
+    isProLoading = true;
+    notifyListeners();
+
+    var res = await SqlConn.readData("Flt_items_Det $pid");
+    print("productdetailslist................ $res");
+
+    var valueMap = json.decode(res);
+
+    productdetail_report.clear();
+    if (valueMap != null) {
+      for (var item in valueMap) {
+        productdetail_report.add(item);
+      }
+    }
+
+    isProLoading = false;
+    print(
+        "product details list-----$valueMap-------${productdetail_report[0]}");
+    notifyListeners();
+  }
+
 //////////////////////////////////////////////////////////////
+  getProductBatchList(BuildContext context, int? pid) async {
+    print("product id...........$pid");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cid = await prefs.getString("cid");
+    String? db = prefs.getString("db_name");
+    String? brId = await prefs.getString("br_id");
+    param = "";
+    isProLoading = true;
+    List<String> tableColumn = [];
+    List<dynamic> rowMap = [];
+
+    notifyListeners();
+
+    var res = await SqlConn.readData("Flt_Batch_List $pid");
+    print("batch details................ $res");
+
+    var valueMap = json.decode(res);
+    batch_report.clear();
+    if (valueMap != null) {
+      for (var item in valueMap) {
+        batch_report.add(item);
+      }
+    }
+    // tableColumn=batch_report[""]
+    tableColumn = batch_report[0].keys.toList();
+    // tableColumn = batch_report.first[0];
+    isProLoading = false;
+    print("table columns-----------${tableColumn}");
+    notifyListeners();
+  }
+
+//////////////////////////////////////////////////////////////////////
   getLedger(BuildContext context, String dte1, String dt2, String sp, String id,
       int multidate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1387,7 +1528,28 @@ class Controller extends ChangeNotifier {
   }
 
   ///////////////////////////////////////////////////////////////////////
+  searchProductNameList(String val) {
+    print("Searach val.....$val.........${productname_list.length}");
+    if (val.isNotEmpty) {
+      isSearch = true;
+      notifyListeners();
+      searchProduct = productname_list
+          .where((e) =>
+              e["P_NAME"].toLowerCase().contains(val.toLowerCase()) ||
+              e["P_NAME"].toLowerCase().startsWith(val.toLowerCase()))
+          .toList();
+    } else {
+      searchProduct = productname_list;
+    }
+
+    print("search list------------${searchProduct}");
+
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////////////////////////
   setIsSearch(bool val) {
+    print("value..........$val");
     isSearch = val;
     notifyListeners();
   }
@@ -1410,10 +1572,10 @@ class Controller extends ChangeNotifier {
       }
     }
     print("years res-$res");
-    
+
     isdbLoading = false;
     notifyListeners();
-    if (db_list.length > 1) {
+    if (db_list.length > 0) {
       if (type == "from login") {
         Navigator.push(
           context,

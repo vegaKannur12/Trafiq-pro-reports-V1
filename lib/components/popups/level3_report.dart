@@ -11,7 +11,7 @@ import '../../controller/controller.dart';
 
 class Level3ReportDetails {
   Color parseColor(String color) {
-    print("Colorrrrr...$color");
+    // print("Colorrrrr...$color");
     String hex = color.replaceAll("#", "");
     if (hex.isEmpty) hex = "ffffff";
     if (hex.length == 3) {

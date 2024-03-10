@@ -13,6 +13,9 @@ class TrafiqProDB {
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB("TrafiqProDB.db");
+
+    // _database = await _initDB("Dayamedicalsreport.db");
+
     return _database!;
   }
 

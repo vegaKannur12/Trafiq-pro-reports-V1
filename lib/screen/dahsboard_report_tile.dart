@@ -42,63 +42,6 @@ class _DashboardReportState extends State<DashboardReport> {
     return Consumer<Controller>(
       builder: (context, value, child) => Column(
         children: [
-          // CarouselSlider(
-          //   options: CarouselOptions(
-          //       enlargeCenterPage: true,
-          //       // aspectRatio: 2,
-          //       viewportFraction: 1,
-          //       // height: size.height * 0.25,
-          //       autoPlayInterval: Duration(seconds: 2),
-          //       autoPlay: true),
-          //   items: value.dashboard_report.map((item) {
-          //     return Builder(
-          //       builder: (BuildContext context) {
-          //         if (item["values"].length > 0) {
-          //           if (item["values"][0].length == 1) {
-          //             return singlevalContainer(size, item);
-          //           } else {
-          //             print("cbjhzdbhzcb----${item["values"]}");
-          //             return multipleValueContainer(size, item);
-          //           }
-          //         } else {
-          //           return Padding(
-          //             padding: const EdgeInsets.all(4.0),
-          //             child: Container(
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(15),
-          //                 color: Color.fromARGB(255, 12, 155, 250),
-          //                 // gradient: LinearGradient(
-          //                 //   begin: Alignment.topRight,
-          //                 //   end: Alignment.bottomLeft,
-          //                 //   colors: [
-          //                 //     Color.fromARGB(124, 250, 59, 225),
-          //                 //     Color.fromARGB(255, 12, 155, 250),
-          //                 //   ],
-          //                 // ),
-          //               ),
-          //               child: Padding(
-          //                 padding: const EdgeInsets.all(28.0),
-          //                 child: Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   children: [
-          //                     Text(
-          //                       item["Rpt_Name"].toString().toUpperCase(),
-          //                       textAlign: TextAlign.center,
-          //                       style: TextStyle(
-          //                           fontWeight: FontWeight.bold,
-          //                           color: Colors.white,
-          //                           fontSize: 16),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           );
-          //         }
-          //       },
-          //     );
-          //   }).toList(),
-          // ),
           Container(
             height: size.height * 0.23,
             child: ListView.builder(
@@ -108,7 +51,7 @@ class _DashboardReportState extends State<DashboardReport> {
               shrinkWrap: true,
               itemCount: value.dashboard_report.length,
               itemBuilder: (context, index) {
-                print("sfjknkjdfnd-${value.dashboard_report[index]}");
+                // print("sfjknkjdfnd-${value.dashboard_report[index]}");
                 if (value.dashboard_report[index]["values"].length > 0) {
                   if (value.dashboard_report[index]["values"][0].length == 1) {
                     return singlevalContainer(
@@ -126,14 +69,6 @@ class _DashboardReportState extends State<DashboardReport> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: Color.fromARGB(255, 12, 155, 250),
-                        // gradient: LinearGradient(
-                        //   begin: Alignment.topRight,
-                        //   end: Alignment.bottomLeft,
-                        //   colors: [
-                        //     Color.fromARGB(124, 250, 59, 225),
-                        //     Color.fromARGB(255, 12, 155, 250),
-                        //   ],
-                        // ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(28.0),
@@ -166,7 +101,7 @@ class _DashboardReportState extends State<DashboardReport> {
 
   Widget singlevalContainer(Size size, Map<String, dynamic> map) {
     Map<String, dynamic> valueMap = map["values"][0];
-    print("values-------$valueMap");
+    // print("values-------$valueMap");
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: FittedBox(
@@ -237,7 +172,7 @@ class _DashboardReportState extends State<DashboardReport> {
   Widget multipleValueContainer(Size size, Map<String, dynamic> map) {
     List<Map<String, dynamic>> valueMap = [];
     map["values"][0].entries.forEach((e) => valueMap.add({e.key: e.value}));
-    print("values-------$map");
+    // print("values-------$map");
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -258,10 +193,6 @@ class _DashboardReportState extends State<DashboardReport> {
                     backgroundImage:
                         AssetImage("assets/${map["Rpt_ImgID"]}.png"),
                   ),
-                  //  Image.asset(
-                  //                   "assets/${list[ind]["Rpt_ImgID"]}.png",
-                  //                   height: size.height * 0.04,
-                  //                 ),
                   SizedBox(
                     width: size.width * 0.02,
                   ),
@@ -333,7 +264,7 @@ class _DashboardReportState extends State<DashboardReport> {
   }
 
   Color parseColor(String color) {
-    print("Colorrrrr...$color");
+    // print("Colorrrrr...$color");
     String hex = color.replaceAll("#", "");
     if (hex.isEmpty) hex = "ffffff";
     if (hex.length == 3) {

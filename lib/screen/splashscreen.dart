@@ -123,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 Color parseColor(String color) {
-  print("Colorrrrr...$color");
+  // print("Colorrrrr...$color");
   String hex = color.replaceAll("#", "");
   if (hex.isEmpty) hex = "ffffff";
   if (hex.length == 3) {

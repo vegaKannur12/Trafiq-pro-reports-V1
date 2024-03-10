@@ -173,20 +173,25 @@ class _HomePageState extends State<HomePage> {
                               context: context,
                               builder: (BuildContext context) =>
                                   popup.buildPopupDialog(
-                                      context,
-                                      "Product",
-                                      "Model",
-                                      todaydate.toString(),
-                                      todaydate.toString()));
+                                    context,
+                                    "Product",
+                                    todaydate.toString(),
+                                    todaydate.toString(),
+                                  ));
                           // Navigator.of(context).pop();
                         },
-                        child: Text(
-                          '...',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 203, 232, 142),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        ),
+                        child: value.isLoading
+                            ? SpinKitChasingDots(
+                                size: 12,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                '...',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 203, 232, 142),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
                       ),
                       // Text("...", style: TextStyle(color: Colors.white)),
 
@@ -288,7 +293,7 @@ class _HomePageState extends State<HomePage> {
           autoPlayInterval: Duration(seconds: 2),
           autoPlay: true),
       items: list.map((i) {
-        print("dshh----$i");
+        // print("dshh----$i");
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -304,36 +309,7 @@ class _HomePageState extends State<HomePage> {
           },
         );
       }).toList(),
-
-      // child: Container(
-      //   width: size.width * 0.95,
-      //   height: size.height * 0.25,
-      //   child: Image.asset(
-      //     "assets/graph.jpeg",
-      //     fit: BoxFit.cover,
-      //   ),
-      // ),
     );
-    // return CarouselSlider(
-    //   options: CarouselOptions(
-    //       viewportFraction: 1,
-    //       height: size.height * 0.25,
-    //       autoPlayInterval: Duration(seconds: 2),
-    //       autoPlay: true),
-    //   items: ["001.png", "002.png", "005.png"].map((i) {
-    //     return Builder(
-    //       builder: (BuildContext context) {
-    //         return Container(
-    //             margin: EdgeInsets.symmetric(horizontal: 4.0),
-    //             child: Image.asset(
-    //               "assets/$i",
-    //               fit: BoxFit.fill,
-    //               width: size.width * 0.95,
-    //             ));
-    //       },
-    //     );
-    //   }).toList(),
-    // );
   }
 
   Color parseColor(String color) {

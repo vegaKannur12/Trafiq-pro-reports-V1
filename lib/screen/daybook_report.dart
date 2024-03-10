@@ -133,7 +133,8 @@ class _DaybookReportsState extends State<DaybookReports> {
                             height: size.height * 0.05,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: parseColor(value.colorString!),
+                                  backgroundColor:
+                                      parseColor(value.colorString!),
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(2), // <-- Radius
@@ -209,70 +210,6 @@ class _DaybookReportsState extends State<DaybookReports> {
                                 }),
                           ),
                         )
-              // ListView.builder(
-              //   physics: NeverScrollableScrollPhysics(),
-              //   itemCount: value.daybook.length,
-              //   shrinkWrap: true,
-              //   itemBuilder: (context, index) => Column(
-              //     children: [
-              //       SizedBox(height: size.height * 0.01),
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           const SizedBox(
-              //             width: 10,
-              //           ),
-              //           Text(
-              //             value.daybook[index].keys.first,
-              //             style: const TextStyle(
-              //                 fontSize: 15,
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.blue),
-              //           ),
-              //         ],
-              //       ),
-              //       Padding(
-              //         padding:
-              //             const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-              //         child: Container(
-              //           color: Colors.white,
-              //           child: ListView.builder(
-              //             shrinkWrap: true,
-              //             scrollDirection: Axis.vertical,
-              //             physics: ScrollPhysics(),
-              //             itemCount: value
-              //                 .daybook[index][value.daybook[index].keys.first]
-              //                 .length,
-              //             itemBuilder: (context, ind) {
-              //               List list = value.daybook[index]
-              //                   [value.daybook[index].keys.first];
-              //               return Container(
-              //                   height: size.height * 0.1,
-              //                   child: ListTile(
-              //                     title: Text(
-              //                       list[ind]["Head"],
-              //                       style: const TextStyle(
-              //                           fontWeight: FontWeight.bold,
-              //                           fontSize: 14,
-              //                           color: Colors.grey),
-              //                     ),
-              //                     subtitle: Text(list[ind]["Narraion"]),
-              //                     trailing: Text(
-              //                       list[ind]["Amount"].toString(),
-              //                       style: TextStyle(
-              //                           fontWeight: FontWeight.bold,
-              //                           color: list[ind]["Amount"] < 0
-              //                               ? Colors.red
-              //                               : Colors.green),
-              //                     ),
-              //                   ));
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -281,7 +218,7 @@ class _DaybookReportsState extends State<DaybookReports> {
   }
 
   Color parseColor(String color) {
-    print("Colorrrrr...$color");
+    // print("Colorrrrr...$color");
     String hex = color.replaceAll("#", "");
     if (hex.isEmpty) hex = "ffffff";
     if (hex.length == 3) {

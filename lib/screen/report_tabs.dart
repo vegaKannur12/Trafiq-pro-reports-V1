@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trafiqpro/screen/customer_list.dart';
 import 'package:trafiqpro/screen/daybook_report.dart';
-import 'package:trafiqpro/screen/product_details.dart';
+import 'package:trafiqpro/screen/1_product_details.dart';
 import '../components/popups/level1_rp_detail.dart';
 import '../controller/controller.dart';
 
@@ -193,7 +193,7 @@ class _ReportTabsState extends State<ReportTabs> {
   }
 
   Color parseColor(String color) {
-    print("Colorrrrr...$color");
+    // print("Colorrrrr...$color");
     String hex = color.replaceAll("#", "");
     if (hex.isEmpty) hex = "ffffff";
     if (hex.length == 3) {

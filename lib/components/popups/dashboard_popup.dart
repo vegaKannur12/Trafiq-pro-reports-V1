@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:trafiqpro/controller/controller.dart';
-import 'package:trafiqpro/screen/batch_data.dart';
-import 'package:trafiqpro/screen/product_details.dart';
+
+import 'package:trafiqpro/screen/1_product_details.dart';
 
 class CustomPopup {
   String? gen_condition;
 
-  Widget buildPopupDialog(BuildContext context, String content1,
-      String content2, String fromDate, String todate) {
+  Widget buildPopupDialog(
+      BuildContext context, String content1, String fromDate, String todate) {
     return Consumer(
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.only(top: 50),
@@ -40,13 +40,13 @@ class CustomPopup {
                           255, 201, 198, 198), // background (button) color
                     ),
                     onPressed: () async {
-                      print("product detail page");
+                      print(
+                          "product detail page..............${fromDate.toString()}......${todate.toString()}");
                       Provider.of<Controller>(context, listen: false)
-                          .getCustomerList(
+                          .getProductNameList(
                         context,
-                        fromDate,
-                        todate,
-                        0,
+                        fromDate.toString(),
+                        todate.toString(),
                       );
                       Navigator.push(
                         context,
@@ -60,27 +60,6 @@ class CustomPopup {
                     // textColor: Theme.of(context).primaryColor,
                     child: Text(
                       '${content1}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(
-                          255, 201, 198, 198), // background (button) color
-                    ),
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Batch_data()),
-                      );
-                      // Navigator.of(context).pop();
-                    },
-                    // textColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      '${content2}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
