@@ -762,8 +762,42 @@ class Controller extends ChangeNotifier {
           notifyListeners();
         } catch (e) {
           print(e);
+          SqlConn.disconnect();
           // return null;
           return [];
+        } 
+        finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        // await initYearsDb(context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
         }
       }
     });
