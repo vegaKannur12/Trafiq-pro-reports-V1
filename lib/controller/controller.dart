@@ -774,8 +774,7 @@ class Controller extends ChangeNotifier {
           SqlConn.disconnect();
           // return null;
           return [];
-        } 
-        finally {
+        } finally {
           if (!SqlConn.isConnected) {
             showDialog(
               context: context,
@@ -1279,8 +1278,8 @@ class Controller extends ChangeNotifier {
     print("batch details................ $res");
 
     var valueMap = json.decode(res);
-    rowMap = valueMap.toList();
-    print("result....$valueMap.....$rowMap");
+    // rowMap = valueMap.toList();
+    // print("result....$valueMap.....$rowMap");
 
     batch_report.clear();
     if (valueMap != null) {
@@ -1291,7 +1290,7 @@ class Controller extends ChangeNotifier {
     batch_report_json = jsonEncode(batch_report);
 
     // tableColumn=batch_report[""]
-    tableColumn = batch_report[0].keys.toList();
+    // tableColumn = batch_report[0].keys.toList();
     // newMp.clear();
     print("batch report.....$batch_report");
 
@@ -1303,7 +1302,7 @@ class Controller extends ChangeNotifier {
     print("newMpcontroller---${newMp}");
     // tableColumn = batch_report.first[0];
     isBatchLoading = false;
-    print("table columns-----------${tableColumn}");
+    // print("table columns-----------${tableColumn}");
     notifyListeners();
   }
 

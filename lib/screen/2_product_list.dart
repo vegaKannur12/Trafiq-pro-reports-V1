@@ -23,6 +23,12 @@ class Detail_list extends StatefulWidget {
 class _Detail_listState extends State<Detail_list> {
   ScrollController _scrollController = ScrollController();
 
+  void initState() {
+    super.initState();
+    Provider.of<Controller>(context, listen: false)
+        .getProductBatchList(context, widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     // DetailedInfoSheet info = DetailedInfoSheet();
@@ -93,37 +99,6 @@ class _Detail_listState extends State<Detail_list> {
                       Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: GestureDetector(
-                  //     onTap: () async {
-                  //       Provider.of<Controller>(context, listen: false)
-                  //           .getProductBatchList(context, widget.id);
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => BatchDataList(
-                  //               scrollController: _scrollController,
-                  //               id: widget.id,
-                  //               context: context),
-                  //         ),
-                  //       );
-                  //     },
-                  //     child: Text(
-                  //       'Batch',
-                  //       style: TextStyle(
-                  //         fontWeight: FontWeight.bold,
-                  //         color: Colors.white,
-                  //         fontSize: 17,
-                  //         decoration: TextDecoration.underline,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Divider(
-                  //   color: Colors.grey,
-                  //   thickness: 1,
-                  // ),
                   value.isLoading
                       ? SpinKitCircle(
                           color: Colors.black,
