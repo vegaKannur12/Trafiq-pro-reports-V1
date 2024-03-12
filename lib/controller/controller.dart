@@ -30,6 +30,8 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> db_list = [];
   bool isCusLoading = false;
   bool isProLoading = false;
+  bool isProdetailLoading = false;
+  bool isBatchLoading = false;
   DateTime? sdate;
   DateTime? ldate;
   String? cName;
@@ -92,7 +94,14 @@ class Controller extends ChangeNotifier {
   String? userName;
   List<Map<String, dynamic>> l3_sub_report_data = [];
 
+  List<String> tableColumn = [];
+  List<dynamic> rowMap = [];
+  List<Map<dynamic, dynamic>> newMp = [];
+  List<Map<dynamic, dynamic>> filterList = [];
+
   var sub_report_json;
+  var batch_report_json;
+
   var l3_sub_report_json;
   String param = "";
 
@@ -1199,7 +1208,7 @@ class Controller extends ChangeNotifier {
     String? db = prefs.getString("db_name");
     String? brId = await prefs.getString("br_id");
     param = "";
-    isProLoading = true;
+    isProdetailLoading = true;
     notifyListeners();
 
     var res = await SqlConn.readData("Flt_items_Det $pid");
@@ -1214,7 +1223,7 @@ class Controller extends ChangeNotifier {
       }
     }
 
-    isProLoading = false;
+    isProdetailLoading = false;
     print(
         "product details list-----$valueMap-------${productdetail_report[0]}");
     notifyListeners();
@@ -1228,9 +1237,7 @@ class Controller extends ChangeNotifier {
     String? db = prefs.getString("db_name");
     String? brId = await prefs.getString("br_id");
     param = "";
-    isProLoading = true;
-    List<String> tableColumn = [];
-    List<dynamic> rowMap = [];
+    isBatchLoading = true;
 
     notifyListeners();
 
@@ -1238,16 +1245,30 @@ class Controller extends ChangeNotifier {
     print("batch details................ $res");
 
     var valueMap = json.decode(res);
+    rowMap = valueMap.toList();
+    print("result....$valueMap.....$rowMap");
+
     batch_report.clear();
     if (valueMap != null) {
       for (var item in valueMap) {
         batch_report.add(item);
       }
     }
+    batch_report_json = jsonEncode(batch_report);
+
     // tableColumn=batch_report[""]
     tableColumn = batch_report[0].keys.toList();
+    // newMp.clear();
+    print("batch report.....$batch_report");
+
+    rowMap.forEach((element) {
+      print("element-----$element");
+      newMp.add(element);
+      filterList.add(element);
+    });
+    print("newMpcontroller---${newMp}");
     // tableColumn = batch_report.first[0];
-    isProLoading = false;
+    isBatchLoading = false;
     print("table columns-----------${tableColumn}");
     notifyListeners();
   }

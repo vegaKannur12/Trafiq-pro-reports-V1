@@ -42,7 +42,8 @@ class _TableDataState extends State<TableData> {
   // final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    print("shrinked   mapTabledata---${widget.decodd}");
+    print(
+        "shrinked   mapTabledata-....${widget.level}.....${widget.keyVal}-.......${widget.title}.........${widget.rpt_key}-${widget.decodd}");
 
     super.initState();
     if (widget.decodd != null) {
