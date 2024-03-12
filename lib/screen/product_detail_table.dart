@@ -2,19 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:trafiqpro/controller/controller.dart';
+import 'package:trafiqpro/screen/detailtable.dart';
+import 'package:trafiqpro/screen/tabledata.dart';
 
 class REport_Table extends StatefulWidget {
   ScrollController scrollController;
   int id;
-  REport_Table({super.key, required this.scrollController, required this.id});
+  BuildContext context;
+  REport_Table(
+      {super.key,
+      required this.scrollController,
+      required this.id,
+      required this.context});
 
   @override
   State<REport_Table> createState() => _REport_TableState();
 }
 
 class _REport_TableState extends State<REport_Table> {
+  // DetailedInfoSheet info = DetailedInfoSheet();
+
   Map<String, dynamic> mapTabledata = {};
   List<String> tableColumn = [];
   Map<String, dynamic> valueMap = {};
@@ -32,73 +42,65 @@ class _REport_TableState extends State<REport_Table> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var width = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Consumer<Controller>(
         builder: (context, value, child) => Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListView.builder(
-              controller: _scrollController,
-              scrollDirection: Axis.vertical,
-              // physics: ScrollPhysics(),
-              shrinkWrap: true,
-              // itemCount: value.dashboard_report.length,
-              itemCount: value.productdetail_report.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // print("producttttttt.......${value.productdetail_report[index]}");
-                    multipleValueContainer(
-                        size, value.productdetail_report[index], widget.id),
-
-                    // Text(value.productdetail_report[index]["PRODUCT_NAME"]
-                    //     .toString())
-                  ],
-                );
-              },
-            ),
-            ////////////////////////////////////////////////
-            value.batch_report.length == 0
-                ? Visibility(
-                    child: Text(
-                      "BATCH",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.yellow),
-                    ),
-                    visible: false,
-                  )
-                : Text(
-                    "BATCH",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-            // Text("${value.branch_list[0]}"),
-            value.isProLoading
+            value.isProdetailLoading
                 ? SpinKitCircle(
-                    color: Colors.black,
+                    color: Colors.white,
                   )
                 : ListView.builder(
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
+                    // physics: ScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: value.batch_report.length,
+                    // itemCount: value.dashboard_report.length,
+                    itemCount: value.productdetail_report.length,
                     itemBuilder: (context, index) {
                       return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           // print("producttttttt.......${value.productdetail_report[index]}");
-                          multipleValueContainer2(
-                              size, value.batch_report[index]),
+                          multipleValueContainer(size,
+                              value.productdetail_report[index], widget.id),
+
                           // Text(value.productdetail_report[index]["PRODUCT_NAME"]
                           //     .toString())
                         ],
                       );
                     },
                   ),
+//////////////////////////////////////////////////////////
+            Container(
+              // height: 700,
+              // width: 300,
+              color: Colors.transparent,
+              child: SingleChildScrollView(
+                // child: DetaildDataTable(),
+                child:
+                    //  DetaildDataTable(
+                    //     // decodd: jsonEncoded,
+                    //     ),
+                    TableDataval(
+                  decodd: value.batch_report_json,
+                  keyVal: "1",
+                  popuWidth: width,
+                  level: 1,
+                  title: " ",
+                  rpt_key: "0",
+                ),
+              ),
+            ),
+            // DetaildDataTable(
+            //     // decodd: jsonEncoded,
+            //     ),
+            // SingleChildScrollView(
+            //   child:
+            // )
           ],
         ),
       ),
@@ -180,6 +182,7 @@ class _REport_TableState extends State<REport_Table> {
       ),
     );
   }
+////////////////////////////////////////////////////
 
   Widget multipleValueContainer2(Size size, Map<String, dynamic> map) {
     List<Map<String, dynamic>> valueMap = [];

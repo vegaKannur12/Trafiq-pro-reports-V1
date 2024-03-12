@@ -123,7 +123,6 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                   : value.productname_list.length,
                               itemBuilder: (context, int index) {
                                 return ListTile(
-                                  
                                   title: Text(
                                     value.isSearch
                                         ? value.searchProduct[index]["P_NAME"]
@@ -168,10 +167,10 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Detail_list(
-                                                map: widget.map,
-                                                id: id,
-                                                title: title,
-                                              )
+                                              map: widget.map,
+                                              id: id,
+                                              title: title,
+                                              context: widget.context)
                                           // LedgerReport(
                                           //       map: widget.map,
                                           //       id: id,

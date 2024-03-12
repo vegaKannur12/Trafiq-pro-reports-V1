@@ -3,14 +3,18 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:trafiqpro/components/date_find.dart';
 import 'package:trafiqpro/controller/controller.dart';
-import 'package:trafiqpro/screen/batch_detail.dart';
 import 'package:trafiqpro/screen/product_detail_table.dart';
 
 class Detail_list extends StatefulWidget {
   Map<String, dynamic> map = {};
   int id;
   String title;
-  Detail_list({required this.map, required this.id, required this.title});
+  BuildContext context;
+  Detail_list(
+      {required this.map,
+      required this.id,
+      required this.title,
+      required this.context});
 
   @override
   State<Detail_list> createState() => _Detail_listState();
@@ -21,59 +25,59 @@ class _Detail_listState extends State<Detail_list> {
 
   @override
   Widget build(BuildContext context) {
+    // DetailedInfoSheet info = DetailedInfoSheet();
+
     Size size = MediaQuery.of(context).size;
     DateFind dateFind = DateFind();
     String? todaydate;
     DateTime now = DateTime.now();
 
     return Scaffold(
-      // backgroundColor: Colors.transparent,
-
-      // appBar: AppBar(
-      //   // brightness: Brightness.dark,
-      //   elevation: 0.0,
-      //   toolbarHeight: 100,
-      //   title: Text(
-      //     "${widget.title}",
-      //     style: TextStyle(
-      //         color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-      //   ),
-      //   centerTitle: true,
-      //   flexibleSpace: Container(
-      //     decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.only(
-      //             bottomLeft: Radius.circular(20),
-      //             bottomRight: Radius.circular(20)),
-      //         gradient: LinearGradient(colors: [
-      //           Color.fromARGB(255, 122, 104, 236),
-      //           Color.fromARGB(255, 233, 106, 148)
-      //         ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
-      //   ),
-      //   leading: InkWell(
-      //       onTap: () {
-      //         Navigator.pop(context);
-      //       },
-      //       child: Icon(
-      //         Icons.arrow_back,
-      //         color: Colors.white,
-      //       )),
-      // ),
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 59, 77, 239),
-        title: Text(
-          "${widget.title}",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Consumer<Controller>(
+          builder: (BuildContext context, Controller value, Widget? child) =>
+              AppBar(
+            backgroundColor: Color.fromARGB(255, 59, 77, 239),
+            title: Text(
+              "${widget.title}",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            leading: InkWell(
+                onTap: () {
+                  value.isBatchLoading = false;
+                  Navigator.pop(context);
+                  // value.isBatchLoading=false;
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                )),
+          ),
         ),
-        leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
       ),
+      // appBar: Consumer<Controller>(builder: (context, value, child) => ,
+      //   AppBar(
+      //     backgroundColor: Color.fromARGB(255, 59, 77, 239),
+      //     title: Text(
+      //       "${widget.title}",
+      //       style: TextStyle(
+      //           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+      //     ),
+      //     leading: InkWell(
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //           value.isBatchLoading=false;
+      //         },
+      //         child: Icon(
+      //           Icons.arrow_back,
+      //           color: Colors.white,
+      //         )),
+      //   ),
+      // ),
       body: Stack(
         children: [
           Container(
@@ -128,10 +132,12 @@ class _Detail_listState extends State<Detail_list> {
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             height: size.height * 0.9,
-                            child: REport_Table(
-                              scrollController: _scrollController,
-                              id: widget.id,
-                            ),
+                            child:
+                                //  info.showInfoSheet(context, "hai")
+                                REport_Table(
+                                    scrollController: _scrollController,
+                                    id: widget.id,
+                                    context: widget.context),
                           ),
                         )
                 ],
