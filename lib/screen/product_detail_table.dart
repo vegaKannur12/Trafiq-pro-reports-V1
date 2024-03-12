@@ -75,26 +75,38 @@ class _REport_TableState extends State<REport_Table> {
                     },
                   ),
 //////////////////////////////////////////////////////////
-            Container(
-              // height: 700,
-              // width: 300,
-              color: Colors.transparent,
-              child: SingleChildScrollView(
-                // child: DetaildDataTable(),
-                child:
-                    //  DetaildDataTable(
-                    //     // decodd: jsonEncoded,
-                    //     ),
-                    TableDataval(
-                  decodd: value.batch_report_json,
-                  keyVal: "1",
-                  popuWidth: width,
-                  level: 1,
-                  title: " ",
-                  rpt_key: "0",
-                ),
-              ),
-            ),
+            value.isBatchLoading
+                ? SpinKitCircle(
+                    color: Colors.black,
+                  )
+                : value.batch_report.length == 0
+                    ? Center(
+                        child: Text(
+                          "No Data Found!!!",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 19),
+                        ),
+                      )
+                    : Container(
+                        // height: 700,
+                        // width: 300,
+                        color: Colors.transparent,
+                        child: SingleChildScrollView(
+                          // child: DetaildDataTable(),
+                          child:
+                              //  DetaildDataTable(
+                              //     // decodd: jsonEncoded,
+                              //     ),
+                              TableDataval(
+                            decodd: value.batch_report_json,
+                            keyVal: "1",
+                            popuWidth: width,
+                            level: 1,
+                            title: "BATCH",
+                            rpt_key: "1",
+                          ),
+                        ),
+                      ),
             // DetaildDataTable(
             //     // decodd: jsonEncoded,
             //     ),
