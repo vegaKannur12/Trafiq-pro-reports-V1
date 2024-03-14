@@ -58,7 +58,7 @@ class _TableDatavalState extends State<TableDataval> {
     print("tablecolumn batch-----$tableColumn...........$rowMap");
     newMp.clear();
     filteredList.clear();
-    // calculateSum(mapTabledata, tableColumn);
+    calculateSum(mapTabledata, tableColumn);
     rowMap.forEach((element) {
       print("element batch-----$element");
       newMp.add(element);
@@ -92,100 +92,38 @@ class _TableDatavalState extends State<TableDataval> {
         "screen width-----${size.width}------datatble width-----$datatbleWidth");
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Container(
+        child: Card(
+          elevation: 2,
           color: Colors.transparent,
-          width: datatbleWidth,
-          child: Column(
-            children: [
-              // widget.keyVal == "0"
-              //     ? Container()
-              //     : Container(
-              // height: size.height * 0.05,
-              // width: 200,
-              // margin: EdgeInsets.only(left: 3, right:3),
-              // child: TextFormField(
-              //   controller: seacrh,
-              //   //   decoration: const InputDecoration(,
-              //   onChanged: (value) {
-              //     print("ggggg----$value");
-              //     setState(() {
-              //       // String key = newMp[0].keys.toList().first;
-              //       // print("msnmdli----${li[0]}");
-              //       filteredList = value.isEmpty || value == " "
-              //           ? newMp
-              //           : newMp
-              //               .where((item) => item[key]
-              //                   .toString()
-              //                   .toLowerCase()
-              //                   .startsWith(
-              //                       value.toString().toLowerCase()))
-              //               .toList();
-              //       print("after filter-------$newMp");
-              //     });
-              //   },
-              //   decoration: InputDecoration(
-              //       prefixIcon: Icon(
-              //         Icons.search,
-              //         color: Colors.blue,
-              //       ),
-              //       suffixIcon: IconButton(
-              //         icon: new Icon(Icons.cancel),
-              //         onPressed: () {
-              //           setState(() {
-              //             filteredList = newMp;
-              //           });
-              //           seacrh.text = " ";
-              //           seacrh.clear();
-              //         },
-              //       ),
-              //       contentPadding: EdgeInsets.symmetric(
-              //           horizontal: 18, vertical: 0),
-              //       border: OutlineInputBorder(
-              //         // borderRadius: BorderRadius.circular(10.0),
-              //         borderSide: const BorderSide(
-              //             color: Color.fromARGB(255, 128, 125, 125),
-              //             width: 0.0),
-              //       ),
-              //       focusedBorder: OutlineInputBorder(
-              //         // borderRadius: BorderRadius.circular(10.0),
-              //         borderSide: const BorderSide(
-              //             color: Color.fromARGB(255, 128, 125, 125),
-              //             width: 0.0),
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         // borderRadius: BorderRadius.circular(10.0),
-              //         borderSide: BorderSide(
-              //             color: Color.fromARGB(255, 128, 125, 125),
-              //             width: 0.0),
-              //       ),
-              //       filled: true,
-              //       hintStyle:
-              //           TextStyle(color: Colors.blue, fontSize: 13),
-              //       hintText: "Search here.. ",
-              //       fillColor: Colors.grey[100]),
-              // ),
-              // ),
-              // SizedBox(
-              //   height: size.height * 0.001,
-              // ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Consumer<Controller>(builder:
-                    (BuildContext context, Controller value, Widget? child) {
-                  print("data table.........$tableColumn");
-                  return DataTable(
-                    showCheckboxColumn: false,
-                    columnSpacing: 2,
-                    headingRowHeight: 45,
-                    horizontalMargin: 5,
-                    headingRowColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    columns: getColumns(tableColumn),
-                    rows: getRowss(filteredList),
-                  );
-                }),
-              ),
-            ],
+          child: Container(
+            color: Colors.transparent,
+            width: datatbleWidth,
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Consumer<Controller>(builder:
+                      (BuildContext context, Controller value, Widget? child) {
+                    print("data table.........$tableColumn");
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DataTable(
+                        showCheckboxColumn: false,
+                        columnSpacing: 5,
+                        // headingRowHeight: 45,
+                        horizontalMargin: 5,
+                        headingRowColor: MaterialStateProperty.resolveWith(
+                            (states) => Color.fromARGB(255, 38, 46, 71)),
+                        dataRowColor: MaterialStateProperty.resolveWith(
+                            (states) => Color.fromARGB(255, 184, 183, 183)),
+                        columns: getColumns(tableColumn),
+                        rows: getRowss(filteredList),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
         ));
   }
@@ -227,7 +165,11 @@ class _TableDatavalState extends State<TableDataval> {
             overflow: TextOverflow.ellipsis,
             softWrap: true,
             style: TextStyle(
-                fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+              fontFamily: 'Oswald',
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
             // textAlign: columnSplit[0][1] == "L"
             //     ? TextAlign.left
             //     : columnSplit[0][1] == "C"
@@ -349,8 +291,9 @@ class _TableDatavalState extends State<TableDataval> {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        // fontWeight: FontWeight.bold,
+                        fontFamily: 'Oswald',
+                        color: Color.fromARGB(255, 76, 101, 182)),
                     textAlign: columnSplit[0][1] == "L"
                         ? TextAlign.left
                         : columnSplit[0][1] == "C"
@@ -367,52 +310,52 @@ class _TableDatavalState extends State<TableDataval> {
   }
 
   /////////////////////////////////////////////////////////////////////
-  // calculateSum(List<dynamic> element, List tableColumn) {
-  //   Map map = {};
-  //   final oCcy = new NumberFormat("#,##0.00", "en_US");
+  calculateSum(List<dynamic> element, List tableColumn) {
+    Map map = {};
+    final oCcy = new NumberFormat("#,##0.00", "en_US");
 
-  //   print("dynamic elemnt------$element");
-  //   double sum = 0.0;
-  //   int intsum = 0;
+    print("dynamic elemnt------$element");
+    double sum = 0.0;
+    int intsum = 0;
 
-  //   for (int i = 0; i < element.length; i++) {
-  //     element[i].forEach((k, value) {
-  //       List key = k.split("_");
-  //       print("hhh-------$key----$value");
-  //       if (key[0][2] == "Y") {
-  //         if (key[0][0] == "C") {
-  //           if (map[k] == null) {
-  //             sum = 0.0;
-  //             sum = sum + value;
-  //           } else {
-  //             sum = map[k] + value;
-  //           }
-  //           print("sum-----$sum");
-  //           map[k] = sum;
-  //           // sum=0.0;
-  //         } else if (key[0][0] == "I") {
-  //           print("value runtyme-${value.runtimeType}");
-  //           // int d = value;
-  //           // intsum = intsum + d;
-  //           // map[k] = intsum;
-  //           int d = value;
-  //           if (map[k] == null) {
-  //             intsum = 0;
-  //             intsum = intsum + d;
-  //           } else {
-  //             intsum = map[k] + d;
-  //           }
-  //           map[k] = intsum;
-  //         }
-  //       } else {
-  //         print("map-ggg----${key}");
-  //         map[k] = " ";
-  //       }
-  //     });
-  //   }
-  //   element.add(map);
-  //   print("final clculate map------$map");
-  // }
+    for (int i = 0; i < element.length; i++) {
+      element[i].forEach((k, value) {
+        List key = k.split("_");
+        print("hhh-------$key----$value");
+        if (key[0][2] == "Y") {
+          if (key[0][0] == "C") {
+            if (map[k] == null) {
+              sum = 0.0;
+              sum = sum + value;
+            } else {
+              sum = map[k] + value;
+            }
+            print("sum-----$sum");
+            map[k] = sum;
+            // sum=0.0;
+          } else if (key[0][0] == "I") {
+            print("value runtyme-${value.runtimeType}");
+            // int d = value;
+            // intsum = intsum + d;
+            // map[k] = intsum;
+            int d = value;
+            if (map[k] == null) {
+              intsum = 0;
+              intsum = intsum + d;
+            } else {
+              intsum = map[k] + d;
+            }
+            map[k] = intsum;
+          }
+        } else {
+          print("map-ggg----${key}");
+          map[k] = " ";
+        }
+      });
+    }
+    element.add(map);
+    print("final clculate map------$map");
+  }
 
 ////////////////////////////////////////////////////////////////////////////////
 //   Color parseColor(String color) {

@@ -42,12 +42,7 @@ class CustomPopup {
                     onPressed: () async {
                       print(
                           "product detail page..............${fromDate.toString()}......${todate.toString()}");
-                      Provider.of<Controller>(context, listen: false)
-                          .getProductNameList(
-                        context,
-                        fromDate.toString(),
-                        todate.toString(),
-                      );
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
