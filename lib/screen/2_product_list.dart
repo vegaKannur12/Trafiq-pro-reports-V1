@@ -89,7 +89,7 @@ class _Detail_listState extends State<Detail_list> {
                 children: [
                   value.isLoading
                       ? SpinKitCircle(
-                          color: Colors.black,
+                          color: Colors.transparent,
                         )
                       : Padding(
                           padding: const EdgeInsets.all(8.0),

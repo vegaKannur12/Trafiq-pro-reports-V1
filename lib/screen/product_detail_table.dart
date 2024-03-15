@@ -88,7 +88,7 @@ class _REport_TableState extends State<REport_Table> {
 //////////////////////////////batch data/////////////////////////////////
             value.isBatchLoading
                 ? SpinKitCircle(
-                    color: Colors.transparent,
+                    color: Colors.white,
                   )
                 : value.batch_report.length == 0
                     ? Container(

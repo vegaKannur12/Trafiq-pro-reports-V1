@@ -1701,6 +1701,7 @@ class Controller extends ChangeNotifier {
           .toList();
     } else {
       // searchProduct = searchProduct;
+      searchProduct.length == 0;
     }
 
     print("search list--------${searchProduct.length}----${searchProduct}");

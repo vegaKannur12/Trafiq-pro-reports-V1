@@ -25,6 +25,7 @@ class Product_DetailList extends StatefulWidget {
 
 class _Product_DetailListState extends State<Product_DetailList> {
   static final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  // WaveClipper wc=WaveClipper
   // ScrollController _scrollController = ScrollController();
   String? todaydate;
   DateTime now = DateTime.now();
@@ -34,12 +35,15 @@ class _Product_DetailListState extends State<Product_DetailList> {
 
   List<String> s = [];
   String txt = "";
+  String t = " ";
+  String newtxt = "";
   final formKey = GlobalKey<FormState>();
   TextEditingController searchProController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     todaydate = DateFormat('dd-MMM-yyyy').format(now);
   }
 
@@ -101,15 +105,6 @@ class _Product_DetailListState extends State<Product_DetailList> {
                             onChanged: (v) {
                               setState(() {
                                 txt = v.toString();
-                                Provider.of<Controller>(context, listen: false)
-                                    .getProductNameList(
-                                        ctx,
-                                        todaydate.toString(),
-                                        todaydate.toString());
-                                print("text data......$txt");
-
-                                // String text = value.searchProductNameList(v);
-                                ;
                               });
                             },
                             decoration: new InputDecoration(
@@ -132,16 +127,10 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                   TextStyle(fontSize: 13, color: Colors.white),
                               suffixIcon: InkWell(
                                 onTap: () {
-                                  txt = "";
                                   searchProController.clear();
                                   value.setIsSearch(false);
-                                  Provider.of<Controller>(context,
-                                          listen: false)
-                                      .getProductNameList(
-                                          context,
-                                          todaydate.toString(),
-                                          todaydate.toString());
-                                  // value.searchProductNameList();
+                                  txt = "";
+                                  print("new text close.......$txt");
                                 },
                                 child: Icon(
                                   Icons.close,
@@ -170,10 +159,12 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                       context,
                                       todaydate.toString(),
                                       todaydate.toString());
-                              String t = " ";
-                              String newtxt = t + txt;
-                              print("new text.......$newtxt");
+                              t = " ";
+                              newtxt = t + txt;
+
                               value.searchProductNameList(newtxt);
+
+                              print("new text.......$newtxt");
 
                               // searchProController.clear();
                               // value.setIsSearch(false);
@@ -185,30 +176,17 @@ class _Product_DetailListState extends State<Product_DetailList> {
                       ],
                     ),
                   ),
-                  // Text(
-                  //   "hai",
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
-
-                  ////////////////////////////////////
-                  value.productname_list == 0
+                  value.isProLoading
                       ? SpinKitCircle(
-                          color: const Color.fromRGBO(255, 255, 255, 1),
+                          color: Colors.white,
                         )
-                      : value.searchProduct.isEmpty &&
+                      : value.searchProduct.isEmpty == 0 ||
                               value.searchProduct.length == 0
                           ? Text(
                               "No data!!!",
-                              style: TextStyle(color: Colors.grey),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 15),
                             )
-                          //  Container(
-                          //     alignment: Alignment.center,
-                          //     height: size.height * 0.7,
-                          //     child: LottieBuilder.asset(
-                          //       "assets/noData.json",
-                          //       height: size.height * 0.23,
-                          //     ),
-                          //   )
                           : Expanded(
                               child: ListView.builder(
                                   shrinkWrap: true,
@@ -262,8 +240,8 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                         Provider.of<Controller>(context,
                                                 listen: false)
                                             .getProductBatchList(context, id);
-                                        value.searchProduct.isEmpty
-                                            ? Navigator.pop(context)
+                                        value.vl.isEmpty
+                                            ? Text("")
                                             : Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
