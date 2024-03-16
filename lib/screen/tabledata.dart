@@ -195,20 +195,21 @@ class _TableDatavalState extends State<TableDataval> {
     for (var r = 0; r < itemList.length; r++) {
       items.add(DataRow(
           onSelectChanged: (selected) {
+            print("inside table......................");
             // // String val=
-            // if (selected!) {
-            //   if (widget.level != 3) {
-            //     print("selected------${itemList[r]}");
-            //     String val = itemList[r].values.toList().first.toString();
+            if (selected!) {
+              if (widget.level != 3) {
+                print("selected row value------${itemList[r]}");
+                String val = itemList[r].values.toList().first.toString();
 
-            //     int index = int.parse(widget.rpt_key!);
-            //     print("val----$val---$index");
+                int index = int.parse(widget.rpt_key!);
+                print("val----$val---$index");
 
-            //     String tit = itemList[r].values.elementAt(index).toString();
-            //     Provider.of<Controller>(context, listen: false)
-            //         .findLevelCriteria(context, widget.level, val, tit);
-            //   }
-            // }
+                String tit = itemList[r].values.elementAt(index).toString();
+                Provider.of<Controller>(context, listen: false)
+                    .findLevelCriteria(context, widget.level, val, tit);
+              }
+            }
           },
           // color: r == itemList.length - 1
           //     ? controller.text == ""

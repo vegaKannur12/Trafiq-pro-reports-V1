@@ -41,6 +41,7 @@ class _Detail_listState extends State<Detail_list> {
     DateTime now = DateTime.now();
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Consumer<Controller>(

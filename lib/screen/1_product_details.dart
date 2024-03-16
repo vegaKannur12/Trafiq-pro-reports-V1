@@ -52,6 +52,7 @@ class _Product_DetailListState extends State<Product_DetailList> {
     Size size = MediaQuery.of(ctx).size;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
@@ -84,6 +85,7 @@ class _Product_DetailListState extends State<Product_DetailList> {
             Container(
               decoration: new BoxDecoration(
                   image: new DecorationImage(
+                      // opacity: 0.5,
                       image: new AssetImage("assets/back.png"),
                       fit: BoxFit.fill)),
             ),

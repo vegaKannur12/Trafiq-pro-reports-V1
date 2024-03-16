@@ -7,6 +7,8 @@ import 'package:trafiqpro/controller/controller.dart';
 
 import 'package:trafiqpro/screen/1_product_details.dart';
 import 'package:trafiqpro/screen/design_test.dart';
+import 'package:trafiqpro/screen/design_test2.dart';
+import 'package:trafiqpro/screen/design_test3.dart';
 
 class CustomPopup {
   String? gen_condition;
@@ -43,17 +45,17 @@ class CustomPopup {
                     onPressed: () async {
                       print(
                           "product detail page..............${fromDate.toString()}......${todate.toString()}");
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => DesignState()),
-                      // );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => Product_DetailList(
-                                  context: context,
-                                )),
+                        MaterialPageRoute(builder: (context) => Design3()),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => Product_DetailList(
+                      //             context: context,
+                      //           )),
+                      // );
                       // Navigator.of(context).pop();
                     },
                     // textColor: Theme.of(context).primaryColor,

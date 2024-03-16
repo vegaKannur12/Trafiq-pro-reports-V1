@@ -18,6 +18,13 @@ class DesignStateState extends State<DesignState> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              // value.setIsSearch(false);
+            },
+            // onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: Container(
           child: Stack(
@@ -29,6 +36,24 @@ class DesignStateState extends State<DesignState> {
                   child: Container(
                     height: 200,
                     color: Colors.black,
+                  ),
+                ),
+              ),
+              ClipPath(
+                clipper: WaveClipper(),
+                child: Container(
+                  height: 180,
+                  color: Colors.black,
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Medicine",
+                      style: TextStyle(
+                          color: Colors.yellow,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),

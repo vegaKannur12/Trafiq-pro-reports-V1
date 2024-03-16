@@ -54,7 +54,7 @@ class _REport_TableState extends State<REport_Table> {
             ),
             value.isProdetailLoading
                 ? SpinKitCircle(
-                    color: Colors.grey,
+                    color: Colors.transparent,
                   )
                 : ListView.builder(
                     controller: _scrollController,
