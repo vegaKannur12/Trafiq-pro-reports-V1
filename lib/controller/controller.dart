@@ -1299,11 +1299,14 @@ class Controller extends ChangeNotifier {
   }
 
 //////////////////////////////////////////////////////////////////////
-  getProductNameList(BuildContext context, String dte1, String dt2) async {
+  getProductNameList(
+      BuildContext context, String dte1, String dt2, String prname) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cid = await prefs.getString("cid");
     String? db = prefs.getString("db_name");
     String? brId = await prefs.getString("br_id");
+
+    vl = prname.trim();
     int multidate = 0;
     param = "";
     isProLoading = true;
@@ -1315,9 +1318,10 @@ class Controller extends ChangeNotifier {
     }
 
     print("productname body----$cid--$db--branch:$brId--$param");
-    print("parameter----$param");
+    print("productname in----$prname");
 
-    var res = await SqlConn.readData("Flt_items_list '','$cid','$brId',$param");
+    var res =
+        await SqlConn.readData("Flt_items_list '$vl','$cid','$brId',$param");
     print("productnamelist $res");
 
     var valueMap = json.decode(res);
@@ -1346,7 +1350,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
 
     var res = await SqlConn.readData("Flt_items_Det $pid");
-    print("productdetailslist................ $res");
+    print("productdetailslist data................ $res");
 
     var valueMap = json.decode(res);
 
@@ -1376,7 +1380,7 @@ class Controller extends ChangeNotifier {
     notifyListeners();
 
     var res = await SqlConn.readData("Flt_Batch_List $pid");
-    print("batch details................ $res");
+    print("batch details data................ $res");
 
     var valueMap = json.decode(res);
     // rowMap = valueMap.toList();
