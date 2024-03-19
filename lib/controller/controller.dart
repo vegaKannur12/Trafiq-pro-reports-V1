@@ -797,7 +797,7 @@ class Controller extends ChangeNotifier {
                   actions: [
                     TextButton(
                       onPressed: () async {
-                        // await initYearsDb(context, ""); // place your db connection here...
+                        await initYearsDb(context, ""); // place your db connection here...
                         Navigator.of(context).pop();
                       },
                       child: Text('Connect'),
