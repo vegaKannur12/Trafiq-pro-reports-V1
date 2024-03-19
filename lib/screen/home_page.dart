@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 203, 232, 142),
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                    fontSize: 18),
                               ),
                       ),
                       // Text("...", style: TextStyle(color: Colors.white)),
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8),
+                                        left: 4, right: 4),
                                     child: Text(
                                       // value.dashDate
                                       value.dashDate == null
