@@ -155,14 +155,16 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                   255, 224, 221, 221), // Background Color
                             ),
                             onPressed: () async {
+                               t = " ";
+                              newtxt = t + txt;
                               await Provider.of<Controller>(context,
                                       listen: false)
                                   .getProductNameList(
                                       context,
                                       todaydate.toString(),
-                                      todaydate.toString());
-                              t = " ";
-                              newtxt = t + txt;
+                                      todaydate.toString(),
+                                      newtxt);
+                             
 
                               value.searchProductNameList(newtxt);
 

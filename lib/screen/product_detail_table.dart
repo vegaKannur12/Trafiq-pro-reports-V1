@@ -37,6 +37,8 @@ class _REport_TableState extends State<REport_Table> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<Controller>(context, listen: false)
+        .getProductBatchList(context, widget.id);
   }
 
   @override

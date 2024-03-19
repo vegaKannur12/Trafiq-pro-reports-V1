@@ -45,17 +45,17 @@ class CustomPopup {
                     onPressed: () async {
                       print(
                           "product detail page..............${fromDate.toString()}......${todate.toString()}");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Design3()),
-                      );
                       // Navigator.push(
                       //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => Product_DetailList(
-                      //             context: context,
-                      //           )),
+                      //   MaterialPageRoute(builder: (context) => Design3()),
                       // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Product_DetailList(
+                                  context: context,
+                                )),
+                      );
                       // Navigator.of(context).pop();
                     },
                     // textColor: Theme.of(context).primaryColor,
