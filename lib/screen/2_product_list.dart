@@ -10,11 +10,13 @@ class Detail_list extends StatefulWidget {
   int id;
   String title;
   BuildContext context;
+  TextEditingController searchProController;
   Detail_list(
       {required this.map,
       required this.id,
       required this.title,
-      required this.context});
+      required this.context,
+      required this.searchProController});
 
   @override
   State<Detail_list> createState() => _Detail_listState();
@@ -39,12 +41,14 @@ class _Detail_listState extends State<Detail_list> {
     DateTime now = DateTime.now();
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Consumer<Controller>(
           builder: (BuildContext context, Controller value, Widget? child) =>
               AppBar(
-            backgroundColor: Color.fromARGB(255, 59, 77, 239),
+            backgroundColor: const Color.fromARGB(255, 16, 32, 46),
+            elevation: 0,
             title: Text(
               "${widget.title}",
               style: TextStyle(
@@ -56,6 +60,10 @@ class _Detail_listState extends State<Detail_list> {
                 onTap: () {
                   value.isBatchLoading = false;
                   Navigator.pop(context);
+                  // Provider.of<Controller>(context, listen: false).isSearch =
+                  //     false;
+                  // widget.searchProController.clear();
+
                   // value.isBatchLoading=false;
                 },
                 child: Icon(
@@ -65,25 +73,6 @@ class _Detail_listState extends State<Detail_list> {
           ),
         ),
       ),
-      // appBar: Consumer<Controller>(builder: (context, value, child) => ,
-      //   AppBar(
-      //     backgroundColor: Color.fromARGB(255, 59, 77, 239),
-      //     title: Text(
-      //       "${widget.title}",
-      //       style: TextStyle(
-      //           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-      //     ),
-      //     leading: InkWell(
-      //         onTap: () {
-      //           Navigator.pop(context);
-      //           value.isBatchLoading=false;
-      //         },
-      //         child: Icon(
-      //           Icons.arrow_back,
-      //           color: Colors.white,
-      //         )),
-      //   ),
-      // ),
       body: Stack(
         children: [
           Container(
@@ -101,19 +90,14 @@ class _Detail_listState extends State<Detail_list> {
                 children: [
                   value.isLoading
                       ? SpinKitCircle(
-                          color: Colors.black,
+                          color: Colors.transparent,
                         )
                       : Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: size.height * 0.9,
-                            child:
-                                //  info.showInfoSheet(context, "hai")
-                                REport_Table(
-                                    scrollController: _scrollController,
-                                    id: widget.id,
-                                    context: widget.context),
-                          ),
+                          child: REport_Table(
+                              scrollController: _scrollController,
+                              id: widget.id,
+                              context: widget.context),
                         )
                 ],
               ),

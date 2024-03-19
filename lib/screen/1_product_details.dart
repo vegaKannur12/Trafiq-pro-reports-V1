@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -23,19 +25,26 @@ class Product_DetailList extends StatefulWidget {
 
 class _Product_DetailListState extends State<Product_DetailList> {
   static final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  // WaveClipper wc=WaveClipper
   // ScrollController _scrollController = ScrollController();
-
+  String? todaydate;
+  DateTime now = DateTime.now();
   double? outstand;
 
   String? formattedDate;
 
   List<String> s = [];
+  String txt = "";
+  String t = " ";
+  String newtxt = "";
   final formKey = GlobalKey<FormState>();
   TextEditingController searchProController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    todaydate = DateFormat('dd-MMM-yyyy').format(now);
   }
 
   @override
@@ -43,10 +52,11 @@ class _Product_DetailListState extends State<Product_DetailList> {
     Size size = MediaQuery.of(ctx).size;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBar(
-          backgroundColor: Colors.blue[300],
+          backgroundColor: const Color.fromARGB(255, 16, 32, 46),
           title: Text(
             "Product Details",
             style: TextStyle(
@@ -57,6 +67,9 @@ class _Product_DetailListState extends State<Product_DetailList> {
             onPressed: () {
               Navigator.of(ctx).pop();
               Navigator.of(context).pop();
+              searchProController.clear();
+              Provider.of<Controller>(context, listen: false).isSearch = false;
+              // value.setIsSearch(false);
             },
             // onPressed: () => Navigator.of(context).pop(),
           ),
@@ -67,125 +80,198 @@ class _Product_DetailListState extends State<Product_DetailList> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Consumer<Controller>(
-          builder: (BuildContext context, Controller value, Widget? child) =>
-              Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: searchProController,
-                  onChanged: (v) => value.searchProductNameList(v),
-                  decoration: new InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 18),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      borderSide: BorderSide(color: Colors.grey, width: 1),
-                    ),
-                    hintText: 'search here',
-                    hintStyle: TextStyle(fontSize: 13),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        searchProController.clear();
-                        value.setIsSearch(false);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 19,
-                      ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                      // opacity: 0.5,
+                      image: new AssetImage("assets/back.png"),
+                      fit: BoxFit.fill)),
+            ),
+            Consumer<Controller>(
+              builder:
+                  (BuildContext context, Controller value, Widget? child) =>
+                      Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: TextField(
+                            // FocusScope.of(context).previousFocus();
+                            autofocus: true,
+                            style: TextStyle(color: Colors.white),
+                            controller: searchProController,
+                            onChanged: (v) {
+                              setState(() {
+                                txt = v.toString();
+                              });
+                            },
+                            decoration: new InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 18),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                borderSide:
+                                    BorderSide(color: Colors.yellow, width: 1),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                borderSide:
+                                    BorderSide(color: Colors.yellow, width: 1),
+                              ),
+                              hintText: 'search here',
+                              hintStyle:
+                                  TextStyle(fontSize: 13, color: Colors.white),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  searchProController.clear();
+                                  value.setIsSearch(false);
+                                  txt = "";
+                                  print("new text close.......$txt");
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  size: 19,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        /////////////////////////////////////////////
+                        SizedBox(
+                          width: 5,
+                        ),
+////////////////////////////////////////////////////////////////////////////
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              // primary: Colors.purpleAccent,
+                              backgroundColor: const Color.fromARGB(
+                                  255, 224, 221, 221), // Background Color
+                            ),
+                            onPressed: () async {
+                              await Provider.of<Controller>(context,
+                                      listen: false)
+                                  .getProductNameList(
+                                      context,
+                                      todaydate.toString(),
+                                      todaydate.toString());
+                              t = " ";
+                              newtxt = t + txt;
+
+                              value.searchProductNameList(newtxt);
+
+                              print("new text.......$newtxt");
+
+                              // searchProController.clear();
+                              // value.setIsSearch(false);
+                            },
+                            child: Icon(
+                              Icons.done,
+                              color: Colors.blue,
+                            )),
+                      ],
                     ),
                   ),
-                ),
-              ),
-              ////////////////////////////////////
-              value.isProLoading
-                  ? SpinKitCircle(
-                      color: Colors.black,
-                    )
-                  : value.productname_list.length == 0
-                      ? Container(
-                          alignment: Alignment.center,
-                          height: size.height * 0.7,
-                          child: LottieBuilder.asset(
-                            "assets/noData.json",
-                            height: size.height * 0.23,
-                          ),
+                  value.isProLoading
+                      ? SpinKitCircle(
+                          color: Colors.white,
                         )
-                      : Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: value.isSearch
-                                  ? value.searchProduct.length
-                                  : value.productname_list.length,
-                              itemBuilder: (context, int index) {
-                                return ListTile(
-                                  title: Text(
-                                    value.isSearch
-                                        ? value.searchProduct[index]["P_NAME"]
-                                        : value.productname_list[index]
-                                            ["P_NAME"],
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  leading: CircleAvatar(
-                                    child: Icon(
-                                      Icons.medical_services_outlined,
-                                      color: Colors.white,
-                                    ),
-                                    backgroundColor: Colors.blue[300],
-                                  ),
-                                  onTap: () {
-                                    int id;
-                                    String title;
+                      : value.searchProduct.isEmpty == 0 ||
+                              value.searchProduct.length == 0
+                          ? Text(
+                              "No data!!!",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 15),
+                            )
+                          : Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: value.isSearch
+                                      ? value.searchProduct.length
+                                      : value.searchProduct.length,
+                                  itemBuilder: (context, int index) {
+                                    return ListTile(
+                                      title: Text(
+                                        value.isSearch
+                                            ? value.searchProduct[index]
+                                                ["P_NAME"]
+                                            : " ",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      leading: value.isSearch
+                                          ? CircleAvatar(
+                                              child: Icon(
+                                                Icons.medical_services_outlined,
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor: Colors.blue[300],
+                                            )
+                                          : Text(""),
+                                      onTap: () {
+                                        int id;
+                                        String title = "";
+                                        id = value.searchProduct[index]["P_ID"];
 
-                                    if (value.isSearch) {
-                                      id = value.searchProduct[index]["P_ID"];
-                                      print("djknjfnjf-----$id");
-                                      title = value.searchProduct[index]
-                                              ["P_NAME"]
-                                          .toString();
-                                    } else {
-                                      id =
-                                          value.productname_list[index]["P_ID"];
-                                      title = value.productname_list[index]
-                                              ["P_NAME"]
-                                          .toString();
-                                    }
-                                    print("product id..,,$id");
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .getProductDetailsList(context, id);
-                                    Provider.of<Controller>(context,
-                                            listen: false)
-                                        .getProductBatchList(context, id);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Detail_list(
-                                              map: widget.map,
-                                              id: id,
-                                              title: title,
-                                              context: widget.context)
-                                          // LedgerReport(
-                                          //       map: widget.map,
-                                          //       id: id,
-                                          //       title: title,
-                                          // )
-                                          ),
+                                        if (value.isSearch) {
+                                          print("djknjfnjf-----$id.....$title");
+                                          Provider.of<Controller>(context,
+                                                  listen: false)
+                                              .getProductDetailsList(
+                                                  context, id);
+                                          title = value.searchProduct[index]
+                                                  ["P_NAME"]
+                                              .toString();
+                                        } else {
+                                          // id = value.productname_list[index]
+                                          //     ["P_ID"];
+                                          // title = value.productname_list[index]
+                                          //         ["P_NAME"]
+                                          //     .toString();
+                                        }
+                                        // print("product id..,,$id");
+
+                                        Provider.of<Controller>(context,
+                                                listen: false)
+                                            .getProductBatchList(context, id);
+                                        value.vl.isEmpty
+                                            ? Text("")
+                                            : Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (ctx) => Detail_list(
+                                                      map: widget.map,
+                                                      id: id,
+                                                      title: title,
+                                                      context: widget.context,
+                                                      searchProController:
+                                                          searchProController),
+                                                )
+                                                // LedgerReport(
+                                                //       map: widget.map,
+                                                //       id: id,
+                                                //       title: title,
+                                                // )
+                                                // ),
+                                                );
+                                        print(
+                                            "productsearchlist---------${value.searchProduct[index]}");
+                                      },
                                     );
-                                    print(
-                                        "productsearchlist---------${value.searchProduct[index]}");
-                                  },
-                                );
-                              }),
-                        ),
-            ],
-          ),
+                                  }),
+                            ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

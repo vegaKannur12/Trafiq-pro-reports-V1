@@ -40,6 +40,8 @@ class Controller extends ChangeNotifier {
   String? yr;
   String? branchid;
   bool isSearch = false;
+  bool isNotSearch = false;
+
   String? fp;
   String? cid;
   ExternalDir externalDir = ExternalDir();
@@ -75,6 +77,7 @@ class Controller extends ChangeNotifier {
 
   List<Map<String, dynamic>> filteredList = [];
   List<Map<String, dynamic>> searchProduct = [];
+  String vl = "";
   var result1 = <String, List<Map<String, dynamic>>>{};
   var resultList = <String, List<Map<String, dynamic>>>{};
 
@@ -278,12 +281,11 @@ class Controller extends ChangeNotifier {
       );
       await SqlConn.connect(
           ip: ip!, port: port!, databaseName: db!, username: un!, password: pw!
-          // ip:"192.168.18.37",
+          // ip: "192.168.0.7",
           // port: "1433",
-          // databaseName: "epulze",
+          // databaseName: "TQ169715",
           // username: "sa",
-          // password: "1"
-
+          // password: "|##v0e3g9a#"
           );
       debugPrint("Connected!");
       getDatabasename(context, type);
@@ -833,8 +835,41 @@ class Controller extends ChangeNotifier {
           notifyListeners();
         } catch (e) {
           print(e);
+          SqlConn.disconnect();
           // return null;
           return [];
+        } finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        // await initYearsDb(context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
         }
       }
     });
@@ -922,8 +957,41 @@ class Controller extends ChangeNotifier {
           notifyListeners();
         } catch (e) {
           print(e);
+          SqlConn.disconnect();
           // return null;
           return [];
+        } finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        // await initYearsDb(context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
         }
       }
     });
@@ -963,8 +1031,41 @@ class Controller extends ChangeNotifier {
           }
         } catch (e) {
           print(e);
+          SqlConn.disconnect();
           // return null;
           return [];
+        } finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        // await initYearsDb(context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
         }
       }
     });
@@ -1583,20 +1684,27 @@ class Controller extends ChangeNotifier {
 
   ///////////////////////////////////////////////////////////////////////
   searchProductNameList(String val) {
-    print("Searach val.....$val.........${productname_list.length}");
-    if (val.isNotEmpty) {
+    String searchtxt = val;
+    vl = val.trim();
+
+    print(
+        "Searach batch val..$vl..........$searchtxt......$val.........${productname_list.length}");
+
+    if (vl.isNotEmpty && vl.length != 0) {
       isSearch = true;
+      // isNotSearch = false;
       notifyListeners();
       searchProduct = productname_list
           .where((e) =>
-              e["P_NAME"].toLowerCase().contains(val.toLowerCase()) ||
+              e["P_NAME"].toLowerCase().contains(val.toLowerCase()) &&
               e["P_NAME"].toLowerCase().startsWith(val.toLowerCase()))
           .toList();
     } else {
-      searchProduct = productname_list;
+      // searchProduct = searchProduct;
+      searchProduct.length == 0;
     }
 
-    print("search list------------${searchProduct}");
+    print("search list--------${searchProduct.length}----${searchProduct}");
 
     notifyListeners();
   }

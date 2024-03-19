@@ -205,7 +205,7 @@ class _TableDataState extends State<TableData> {
 
       columnSplit = columns[i].split('_');
       wid = columns[i].substring(3, 5);
-      print("columnsplit-------${wid}");
+      print("columnsplitdash-------${wid}");
       if (columns.length == 0) {
         colwidth = (datatbleWidth! / columns.length);
       } else {
@@ -217,7 +217,7 @@ class _TableDataState extends State<TableData> {
           colwidth = (datatbleWidth! * double.parse(wid) / 100);
           colwidth = colwidth * 0.94;
         }
-        print("columnwdth-----$i--$datatbleWidth ----${double.parse(wid)}");
+        print("columnwdthdash-----$i--$datatbleWidth ----${double.parse(wid)}");
       }
       datacolumnList.add(DataColumn(
         label: SizedBox(
