@@ -27,8 +27,6 @@ class _Detail_listState extends State<Detail_list> {
 
   void initState() {
     super.initState();
-    // Provider.of<Controller>(context, listen: false)
-    //     .getProductBatchList(context, widget.id);
   }
 
   @override

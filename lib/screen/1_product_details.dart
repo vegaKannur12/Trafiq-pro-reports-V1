@@ -25,8 +25,7 @@ class Product_DetailList extends StatefulWidget {
 
 class _Product_DetailListState extends State<Product_DetailList> {
   static final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  // WaveClipper wc=WaveClipper
-  // ScrollController _scrollController = ScrollController();
+
   String? todaydate;
   DateTime now = DateTime.now();
   double? outstand;
@@ -132,7 +131,6 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                   searchProController.clear();
                                   value.setIsSearch(false);
                                   txt = "";
-                                  print("new text close.......$txt");
                                 },
                                 child: Icon(
                                   Icons.close,
@@ -155,7 +153,7 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                   255, 224, 221, 221), // Background Color
                             ),
                             onPressed: () async {
-                               t = " ";
+                              t = " ";
                               newtxt = t + txt;
                               await Provider.of<Controller>(context,
                                       listen: false)
@@ -164,14 +162,8 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                       todaydate.toString(),
                                       todaydate.toString(),
                                       newtxt);
-                             
 
                               value.searchProductNameList(newtxt);
-
-                              print("new text.......$newtxt");
-
-                              // searchProController.clear();
-                              // value.setIsSearch(false);
                             },
                             child: Icon(
                               Icons.done,
@@ -224,7 +216,6 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                         id = value.searchProduct[index]["P_ID"];
 
                                         if (value.isSearch) {
-                                          print("djknjfnjf-----$id.....$title");
                                           Provider.of<Controller>(context,
                                                   listen: false)
                                               .getProductDetailsList(
@@ -232,14 +223,7 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                           title = value.searchProduct[index]
                                                   ["P_NAME"]
                                               .toString();
-                                        } else {
-                                          // id = value.productname_list[index]
-                                          //     ["P_ID"];
-                                          // title = value.productname_list[index]
-                                          //         ["P_NAME"]
-                                          //     .toString();
-                                        }
-                                        // print("product id..,,$id");
+                                        } else {}
 
                                         Provider.of<Controller>(context,
                                                 listen: false)
@@ -256,16 +240,7 @@ class _Product_DetailListState extends State<Product_DetailList> {
                                                       context: widget.context,
                                                       searchProController:
                                                           searchProController),
-                                                )
-                                                // LedgerReport(
-                                                //       map: widget.map,
-                                                //       id: id,
-                                                //       title: title,
-                                                // )
-                                                // ),
-                                                );
-                                        print(
-                                            "productsearchlist---------${value.searchProduct[index]}");
+                                                ));
                                       },
                                     );
                                   }),

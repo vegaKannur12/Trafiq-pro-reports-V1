@@ -43,8 +43,6 @@ class CustomPopup {
                           255, 201, 198, 198), // background (button) color
                     ),
                     onPressed: () async {
-                      print(
-                          "product detail page..............${fromDate.toString()}......${todate.toString()}");
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(builder: (context) => Design3()),
