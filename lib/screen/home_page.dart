@@ -222,6 +222,7 @@ class _HomePageState extends State<HomePage> {
                                       value.dashDate == null
                                           ? " "
                                           : value.dashDate.toString(),
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 13),
                                     ),
