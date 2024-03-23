@@ -175,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                                   popup.buildPopupDialog(
                                     context,
                                     "Product",
+                                    "Sales & Stock",
                                     todaydate.toString(),
                                     todaydate.toString(),
                                   ));

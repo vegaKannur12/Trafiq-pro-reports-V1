@@ -14,8 +14,8 @@ import 'package:trafiqpro/screen/stock_sales.dart';
 class CustomPopup {
   String? gen_condition;
 
-  Widget buildPopupDialog(
-      BuildContext context, String content1, String fromDate, String todate) {
+  Widget buildPopupDialog(BuildContext context, String content1,
+      String content2, String fromDate, String todate) {
     return Consumer(
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.only(top: 50),
@@ -46,20 +46,43 @@ class CustomPopup {
                     onPressed: () async {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Sales_Stock()),
+                        MaterialPageRoute(
+                            builder: (context) => Product_DetailList(
+                                  context: context,
+                                )),
                       );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => Product_DetailList(
-                      //             context: context,
-                      //           )),
-                      // );
                       // Navigator.of(context).pop();
                     },
                     // textColor: Theme.of(context).primaryColor,
                     child: Text(
                       '${content1}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  // height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(
+                          255, 201, 198, 198), // background (button) color
+                    ),
+                    onPressed: () {
+                      Provider.of<Controller>(context, listen: false)
+                          .getSalesStock(context);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Sales_Stock(
+                                  context: context,
+                                )),
+                      );
+                    },
+                    // textColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      '${content2}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),

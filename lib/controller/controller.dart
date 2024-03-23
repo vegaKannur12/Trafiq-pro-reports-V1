@@ -49,6 +49,12 @@ class Controller extends ChangeNotifier {
   String? sof;
   String? branchname;
   String? selected;
+  String? selectedcategory;
+  String? selectedcategoryId;
+  String? selectedcompany;
+  String? selectedcompanyId;
+  String? selectedgroup;
+  String? selectedgroupId;
   var jsonEncoded;
   String poptitle = "";
   bool isDbNameLoading = false;
@@ -66,6 +72,7 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> dashboard_report = [];
   List<Map<String, dynamic>> productdetail_report = [];
   List<Map<String, dynamic>> batch_report = [];
+  List<Map<String, dynamic>> sales_report = [];
   List<Map<String, dynamic>> ledger = [];
   List<Map<String, dynamic>> daybook = [];
   List<Map<String, dynamic>> ledger_list = [];
@@ -74,6 +81,7 @@ class Controller extends ChangeNotifier {
   List<Widget> ledgerWidget = [];
   String? appType;
   bool isdbLoading = true;
+  bool issalesLoading = true;
 
   List<Map<String, dynamic>> filteredList = [];
   List<Map<String, dynamic>> searchProduct = [];
@@ -93,6 +101,9 @@ class Controller extends ChangeNotifier {
   List<Map<String, dynamic>> branch_list = [];
   List<Map<String, dynamic>> customer_list = [];
   List<Map<String, dynamic>> productname_list = [];
+  List<Map<String, dynamic>> salesstock_list = [];
+  List<Map<String, dynamic>> salesstock_listcom = [];
+  List<Map<String, dynamic>> salesstock_listgrp = [];
 
   String? userName;
   List<Map<String, dynamic>> l3_sub_report_data = [];
@@ -104,6 +115,7 @@ class Controller extends ChangeNotifier {
 
   var sub_report_json;
   var batch_report_json;
+  var sales_stock_json;
 
   var l3_sub_report_json;
   String param = "";
@@ -1130,30 +1142,71 @@ class Controller extends ChangeNotifier {
   getBranches(
     BuildContext context,
   ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cid = await prefs.getString("cid");
-    String? db = prefs.getString("db_name");
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? cid = await prefs.getString("cid");
+          String? db = prefs.getString("db_name");
 
-    var res = await SqlConn.readData("Flt_Load_Branches '$db','$cid'");
-    print("barnch res--------$db ----- $res");
+          var res = await SqlConn.readData("Flt_Load_Branches '$db','$cid'");
+          print("barnch res--------$db ----- $res");
 
-    var valueMap = json.decode(res);
-    branch_list.clear();
+          var valueMap = json.decode(res);
+          branch_list.clear();
 
-    if (valueMap != null) {
-      for (var item in valueMap) {
-        branch_list.add(item);
+          if (valueMap != null) {
+            for (var item in valueMap) {
+              branch_list.add(item);
+            }
+            selected = branch_list[0]['Br_Name'];
+            branchid = branch_list[0]['Br_ID'].toString();
+            prefs.setString("br_id", branchid.toString());
+            getHome(context, branchid.toString(), "init");
+          } else {
+            prefs.setString("br_id", "0");
+            getHome(context, "0", "init");
+          }
+
+          notifyListeners();
+        } catch (e) {
+          SqlConn.disconnect();
+        } finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        await initYearsDb(
+                            context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
+        }
       }
-      selected = branch_list[0]['Br_Name'];
-      branchid = branch_list[0]['Br_ID'].toString();
-      prefs.setString("br_id", branchid.toString());
-      getHome(context, branchid.toString(), "init");
-    } else {
-      prefs.setString("br_id", "0");
-      getHome(context, "0", "init");
-    }
-
-    notifyListeners();
+    });
   }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1171,6 +1224,51 @@ class Controller extends ChangeNotifier {
     getHome(context, branchid.toString(), "");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("br_id", branchid.toString());
+    notifyListeners();
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  setDropdowncategory(String s, BuildContext context) async {
+    // branchid = s;
+    for (int i = 0; i < salesstock_list.length; i++) {
+      if (salesstock_list[i]["Code"].toString() == s.toString()) {
+        selectedcategory = salesstock_list[i]["Category"];
+        selectedcategoryId = salesstock_list[i]["Code"].toString();
+        print("s category------$s---$selectedcategoryId");
+
+        notifyListeners();
+      }
+    }
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////
+  setDropdowncompany(String s, BuildContext context) async {
+    // branchid = s;
+    for (int i = 0; i < salesstock_listcom.length; i++) {
+      if (salesstock_listcom[i]["Code"].toString() == s.toString()) {
+        selectedcompany = salesstock_listcom[i]["company"];
+        selectedcompanyId = salesstock_listcom[i]["Code"].toString();
+        print("s company------$s---$selectedcompanyId");
+
+        notifyListeners();
+      }
+    }
+    notifyListeners();
+  }
+
+  ///////////////////////////////////////////////////
+  setDropdowngroup(String s, BuildContext context) async {
+    // branchid = s;
+    for (int i = 0; i < salesstock_listgrp.length; i++) {
+      if (salesstock_listgrp[i]["Code"].toString() == s.toString()) {
+        selectedgroup = salesstock_listgrp[i]["GroupName"];
+        selectedgroupId = salesstock_listgrp[i]["Code"].toString();
+        print("s GroupName------$s---$selectedgroupId");
+
+        notifyListeners();
+      }
+    }
     notifyListeners();
   }
 
@@ -1257,46 +1355,87 @@ class Controller extends ChangeNotifier {
 //////////////////////////////////////////////////////////////////////
   getCustomerList(
       BuildContext context, String dte1, String dt2, int multidate) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cid = await prefs.getString("cid");
-    String? db = prefs.getString("db_name");
-    String? brId = await prefs.getString("br_id");
-    param = "";
-    isCusLoading = true;
-    notifyListeners();
-    if (multidate == 0) {
-      param = "'$dte1','$dt2'";
-    } else {
-      param = "'$dte1','$dt2'";
-    }
+    NetConnection.networkConnection(context).then((value) async {
+      if (value == true) {
+        try {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? cid = await prefs.getString("cid");
+          String? db = prefs.getString("db_name");
+          String? brId = await prefs.getString("br_id");
+          param = "";
+          isCusLoading = true;
+          notifyListeners();
+          if (multidate == 0) {
+            param = "'$dte1','$dt2'";
+          } else {
+            param = "'$dte1','$dt2'";
+          }
 
-    print("customer body---$brId---$dte1---$dt2-----$param");
+          print("customer body---$brId---$dte1---$dt2-----$param");
 
-    var res =
-        await SqlConn.readData("Flt_AccHeads '$db','$cid','$brId',$param");
-    var valueMap = json.decode(res);
-    customer_list.clear();
-    if (valueMap != null) {
-      for (var item in valueMap) {
-        // double d = item["Balance"];
+          var res = await SqlConn.readData(
+              "Flt_AccHeads '$db','$cid','$brId',$param");
+          var valueMap = json.decode(res);
+          customer_list.clear();
+          if (valueMap != null) {
+            for (var item in valueMap) {
+              // double d = item["Balance"];
 
-        // print("haii---${item["Balance"].runtimeType}");
-        // if (d != 0.0) {
-        //   String bal = d.toStringAsFixed(2);
-        // }
-        // Map<String, dynamic> map = {
-        //   "Acc_ID": item["Acc_ID"],
-        //   "Head": item["Head"],
-        //   "Group": item["Group"],
-        //   "Balance": bal
-        // };
-        customer_list.add(item);
+              // print("haii---${item["Balance"].runtimeType}");
+              // if (d != 0.0) {
+              //   String bal = d.toStringAsFixed(2);
+              // }
+              // Map<String, dynamic> map = {
+              //   "Acc_ID": item["Acc_ID"],
+              //   "Head": item["Head"],
+              //   "Group": item["Group"],
+              //   "Balance": bal
+              // };
+              customer_list.add(item);
+            }
+          }
+
+          isCusLoading = false;
+          print("customer list-------------$customer_list");
+          notifyListeners();
+        } catch (e) {
+          SqlConn.disconnect();
+        } finally {
+          if (!SqlConn.isConnected) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Not Connected.!",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      SpinKitCircle(
+                        color: Colors.green,
+                      )
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        await initYearsDb(
+                            context, ""); // place your db connection here...
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Connect'),
+                    ),
+                  ],
+                );
+              },
+            );
+            debugPrint("Database not connected, popping context.");
+          }
+        }
       }
-    }
-
-    isCusLoading = false;
-    print("customer list-------------$customer_list");
-    notifyListeners();
+    });
   }
 
 //////////////////////////////////////////////////////////////////////
@@ -1409,6 +1548,101 @@ class Controller extends ChangeNotifier {
     // tableColumn = batch_report.first[0];
     isBatchLoading = false;
     // print("table columns-----------${tableColumn}");
+    notifyListeners();
+  }
+
+  //////////////////////////////////////////////////////////////
+  getSalesStockTable(
+      BuildContext context,
+      String date1,
+      String date2,
+      int branch,
+      String companyid,
+      String categoryid,
+      String group,
+      String item) async {
+    print(
+        "sales id...........$date1....$date2.....$branch......$companyid....$categoryid.....$group......$item");
+    issalesLoading = true;
+
+    notifyListeners();
+
+    var res = await SqlConn.readData(
+        "Flt_stock_sale '$date1', '$date2', $branch, '$companyid', '$categoryid', '$group', '$item'");
+    print("sales stock dataaa................ $res");
+
+    var valueMap = json.decode(res);
+    rowMap = valueMap.toList();
+    print("sales result....$valueMap");
+
+    sales_report.clear();
+    if (valueMap != null) {
+      for (var item in valueMap) {
+        sales_report.add(item);
+      }
+    }
+    sales_stock_json = jsonEncode(sales_report);
+
+    // // tableColumn=batch_report[""]
+    // // tableColumn = batch_report[0].keys.toList();
+    // // newMp.clear();
+    // print("batch report.....$batch_report");
+
+    rowMap.forEach((element) {
+      print("element-----$element");
+      newMp.add(element);
+      filterList.add(element);
+    });
+    issalesLoading = false;
+
+    notifyListeners();
+  }
+
+  ////////////////////////////////////////////////////////////
+  getSalesStock(BuildContext context) async {
+    notifyListeners();
+    issalesLoading = true;
+    var res = await SqlConn.readData("Flt_Get_Masters 'c'");
+    var res1 = await SqlConn.readData("Flt_Get_Masters 'M'");
+    var res2 = await SqlConn.readData("Flt_Get_Masters 'G'");
+    print("productnamelist $res");
+    print("master data $res1");
+    print("group data $res2");
+
+    var valueMap = json.decode(res);
+    var valueMap1 = json.decode(res1);
+    var valueMap2 = json.decode(res2);
+
+    salesstock_list.clear();
+    salesstock_listcom.clear();
+    salesstock_listgrp.clear();
+    if (valueMap != null) {
+      for (var item in valueMap) {
+        salesstock_list.add(item);
+      }
+      selectedcategory = salesstock_list[0]["Category"];
+
+      print("selected category.......$selectedcategory");
+    }
+    if (valueMap1 != null) {
+      for (var item in valueMap1) {
+        salesstock_listcom.add(item);
+      }
+
+      selectedcompany = salesstock_listcom[0]["company"];
+      print("selected company.......$salesstock_listcom");
+    }
+    if (valueMap2 != null) {
+      for (var item in valueMap2) {
+        salesstock_listgrp.add(item);
+      }
+
+      selectedgroup = salesstock_listgrp[0]["GroupName"];
+      print("selected GroupName.......$selectedgroup");
+    }
+
+    issalesLoading = false;
+    print("sales stock-------------$salesstock_list");
     notifyListeners();
   }
 

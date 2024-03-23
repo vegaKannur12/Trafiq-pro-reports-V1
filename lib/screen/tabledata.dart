@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../controller/controller.dart';
@@ -93,13 +94,86 @@ class _TableDatavalState extends State<TableDataval> {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Card(
-          elevation: 2,
+          elevation: 0,
           color: Colors.transparent,
           child: Container(
             color: Colors.transparent,
             width: datatbleWidth,
             child: Column(
               children: [
+                widget.keyVal == '0'
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: size.height * 0.05,
+                          // width: 200,
+                          // margin: EdgeInsets.only(left: 3, right:3),
+                          child: TextFormField(
+                            controller: seacrh,
+                            //   decoration: const InputDecoration(,
+                            onChanged: (value) {
+                              setState(() {
+                                // String key = newMp[0].keys.toList().first;
+                                // print("msnmdli----${li[0]}");
+                                filteredList = value.isEmpty || value == " "
+                                    ? newMp
+                                    : newMp
+                                        .where((item) => item[key]
+                                            .toString()
+                                            .toLowerCase()
+                                            .startsWith(
+                                                value.toString().toLowerCase()))
+                                        .toList();
+                                print("after filter-------$newMp");
+                              });
+                            },
+                            decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.blue,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: new Icon(Icons.cancel),
+                                  onPressed: () {
+                                    setState(() {
+                                      filteredList = newMp;
+                                    });
+                                    seacrh.text = " ";
+                                    seacrh.clear();
+                                  },
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 18, vertical: 0),
+                                border: OutlineInputBorder(
+                                  // borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 128, 125, 125),
+                                      width: 0.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  // borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 128, 125, 125),
+                                      width: 0.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  // borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 128, 125, 125),
+                                      width: 0.0),
+                                ),
+                                filled: true,
+                                hintStyle:
+                                    TextStyle(color: Colors.blue, fontSize: 13),
+                                hintText: "Search here.. ",
+                                fillColor: Colors.grey[100]),
+                          ),
+                        ),
+                      ),
+                SizedBox(
+                  height: size.height * 0.001,
+                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Consumer<Controller>(builder:
@@ -107,17 +181,21 @@ class _TableDatavalState extends State<TableDataval> {
                     print("data table.........$tableColumn");
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DataTable(
-                        showCheckboxColumn: false,
-                        columnSpacing: 5,
-                        // headingRowHeight: 45,
-                        horizontalMargin: 5,
-                        headingRowColor: MaterialStateProperty.resolveWith(
-                            (states) => Color.fromARGB(255, 38, 46, 71)),
-                        dataRowColor: MaterialStateProperty.resolveWith(
-                            (states) => Color.fromARGB(255, 184, 183, 183)),
-                        columns: getColumns(tableColumn),
-                        rows: getRowss(filteredList),
+                      child: Column(
+                        children: [
+                          DataTable(
+                            showCheckboxColumn: false,
+                            columnSpacing: 5,
+                            // headingRowHeight: 45,
+                            horizontalMargin: 5,
+                            headingRowColor: MaterialStateProperty.resolveWith(
+                                (states) => Color.fromARGB(255, 38, 46, 71)),
+                            dataRowColor: MaterialStateProperty.resolveWith(
+                                (states) => Color.fromARGB(255, 184, 183, 183)),
+                            columns: getColumns(tableColumn),
+                            rows: getRowss(filteredList),
+                          ),
+                        ],
                       ),
                     );
                   }),
@@ -139,7 +217,6 @@ class _TableDatavalState extends State<TableDataval> {
     String wid = " ";
     for (int i = 0; i < columns.length; i++) {
       double colwidth = 0.0;
-
       columnSplit = columns[i].split('_');
       wid = columns[i].substring(3, 5);
       print("columnsplit batch-------${wid}");

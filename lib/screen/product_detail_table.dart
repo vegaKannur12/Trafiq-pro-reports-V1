@@ -107,7 +107,7 @@ class _REport_TableState extends State<REport_Table> {
                             //     ),
                             TableDataval(
                           decodd: value.batch_report_json,
-                          keyVal: "1",
+                          keyVal: "0",
                           popuWidth: width,
                           level: 1,
                           title: "BATCH",
